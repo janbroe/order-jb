@@ -1,4 +1,4 @@
-package com.switchfully.service.dtos;
+package com.switchfully.service.customer.dtos;
 
 public class CreateCustomerDTO {
 

@@ -1,7 +1,7 @@
-package com.switchfully.service;
+package com.switchfully.service.customer;
 
-import com.switchfully.domain.Customer;
-import com.switchfully.service.dtos.CustomerDTO;
+import com.switchfully.domain.customer.Customer;
+import com.switchfully.service.customer.dtos.CustomerDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;

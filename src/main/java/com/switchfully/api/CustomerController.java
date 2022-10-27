@@ -1,8 +1,8 @@
 package com.switchfully.api;
 
-import com.switchfully.service.dtos.CreateCustomerDTO;
-import com.switchfully.service.CustomerService;
-import com.switchfully.service.dtos.CustomerDTO;
+import com.switchfully.service.customer.dtos.CreateCustomerDTO;
+import com.switchfully.service.customer.CustomerService;
+import com.switchfully.service.customer.dtos.CustomerDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

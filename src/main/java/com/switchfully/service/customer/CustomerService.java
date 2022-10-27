@@ -1,9 +1,9 @@
-package com.switchfully.service;
+package com.switchfully.service.customer;
 
-import com.switchfully.domain.Customer;
-import com.switchfully.domain.CustomerRepository;
-import com.switchfully.service.dtos.CreateCustomerDTO;
-import com.switchfully.service.dtos.CustomerDTO;
+import com.switchfully.domain.customer.Customer;
+import com.switchfully.domain.customer.CustomerRepository;
+import com.switchfully.service.customer.dtos.CreateCustomerDTO;
+import com.switchfully.service.customer.dtos.CustomerDTO;
 import org.springframework.stereotype.Service;
 
 @Service
