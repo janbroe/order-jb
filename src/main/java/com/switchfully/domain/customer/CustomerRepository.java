@@ -2,6 +2,7 @@ package com.switchfully.domain.customer;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,5 +18,9 @@ public class CustomerRepository {
 
     public void createCustomer(Customer customer) {
         customerRepository.put(customer.getId(), customer);
+    }
+
+    public Collection<Customer> getAllCustomers() {
+        return customerRepository.values();
     }
 }
