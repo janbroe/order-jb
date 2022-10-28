@@ -1,36 +1,46 @@
-package com.switchfully.service.customer.dtos;
+package com.switchfully.service.user.dtos;
 
-public class CreateCustomerDTO {
+public class UserDTO {
 
+    private String id;
     private String firstname;
     private String lastname;
     private String email;
     private String address;
     private String phoneNumber;
 
-    public CreateCustomerDTO setFirstname(String firstname) {
+    public UserDTO setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public UserDTO setFirstname(String firstname) {
         this.firstname = firstname;
         return this;
     }
 
-    public CreateCustomerDTO setLastname(String lastname) {
+    public UserDTO setLastname(String lastname) {
         this.lastname = lastname;
         return this;
     }
 
-    public CreateCustomerDTO setEmail(String email) {
+    public UserDTO setEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public CreateCustomerDTO setAddress(String address) {
+    public UserDTO setAddress(String address) {
         this.address = address;
         return this;
     }
 
-    public CreateCustomerDTO setPhoneNumber(String phoneNumber) {
+    public UserDTO setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getFirstname() {

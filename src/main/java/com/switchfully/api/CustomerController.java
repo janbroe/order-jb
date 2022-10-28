@@ -1,8 +1,8 @@
 package com.switchfully.api;
 
-import com.switchfully.service.customer.dtos.CreateCustomerDTO;
-import com.switchfully.service.customer.CustomerService;
-import com.switchfully.service.customer.dtos.CustomerDTO;
+import com.switchfully.service.user.dtos.CreateUserDTO;
+import com.switchfully.service.user.UserService;
+import com.switchfully.service.user.dtos.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,22 +15,16 @@ public class CustomerController {
 
     private final Logger log = LoggerFactory.getLogger(CustomerController.class);
 
-    private final CustomerService customerService;
+    private final UserService userService;
 
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
-
-    @GetMapping()
-    public String getAllTest() {
-        log.info("GET -> getBackTest");
-        return "test";
+    public CustomerController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDTO createCustomer(@RequestBody CreateCustomerDTO createCustomerDTO) {
-        log.info("POST -> create User" + createCustomerDTO.toString());
-        return customerService.createCustomer(createCustomerDTO);
+    public UserDTO createCustomer(@RequestBody CreateUserDTO createUserDTO) {
+        log.info("POST -> create User" + createUserDTO.toString());
+        return userService.createUser(createUserDTO);
     }
 }

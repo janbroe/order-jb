@@ -1,7 +1,5 @@
 package com.switchfully.service.item.dtos;
 
-import com.switchfully.service.customer.dtos.CreateCustomerDTO;
-
 public class CreateItemDTO {
 
     private String name;

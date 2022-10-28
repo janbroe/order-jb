@@ -1,10 +1,10 @@
 package com.switchfully;
 
-import com.switchfully.domain.customer.Customer;
-import com.switchfully.domain.customer.CustomerRepository;
-import com.switchfully.service.customer.CustomerMapper;
-import com.switchfully.service.customer.dtos.CreateCustomerDTO;
-import com.switchfully.service.customer.dtos.CustomerDTO;
+import com.switchfully.domain.user.Role;
+import com.switchfully.domain.user.User;
+import com.switchfully.domain.user.UserRepository;
+import com.switchfully.service.user.dtos.CreateUserDTO;
+import com.switchfully.service.user.dtos.UserDTO;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,9 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,24 +23,24 @@ public class CustomerIntegrationTest {
     private int port;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository customerRepository;
 
     @BeforeEach
     void createCustomerRepository() {
-        customerRepository.createCustomer(new Customer("Frank", "Verstraeten", "frankiexxx@gmail.com", "Beeldekensstraat 5", "0455667788"));
+        customerRepository.createUser(new User().setFirstname("Frank").setLastname("Verstraeten").setEmail("frankiexxx@gmail.com").setAddress("Beeldekensstraat 5").setPhoneNumber("0455667788").setPassword("pwd").setRole(Role.CUSTOMER));
     }
 
     @Test
     void addCustomer() {
 
-        CreateCustomerDTO given = new CreateCustomerDTO()
+        CreateUserDTO given = new CreateUserDTO()
                 .setFirstname("Brad")
                 .setLastname("Pit")
                 .setEmail("bp@outlook.com")
                 .setAddress("hollywood")
                 .setPhoneNumber("6655112233");
 
-        CustomerDTO result = RestAssured
+        UserDTO result = RestAssured
                 .given()
                 .body(given)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +53,7 @@ public class CustomerIntegrationTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
-                .as(CustomerDTO.class);
+                .as(UserDTO.class);
 
         assertThat(result).isNotNull();
         assertThat(result.getFirstname()).isEqualTo(given.getFirstname());
