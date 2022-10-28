@@ -3,12 +3,11 @@ package com.switchfully.domain.user;
 import com.google.common.collect.Lists;
 import java.util.List;
 
-import static com.switchfully.domain.user.Feature.ADD_ITEM;
-import static com.switchfully.domain.user.Feature.LOGIN;
+import static com.switchfully.domain.user.Feature.*;
 
 public enum Role {
-    CUSTOMER(Lists.newArrayList(LOGIN)),
-    ADMIN(Lists.newArrayList(LOGIN, ADD_ITEM));
+    CUSTOMER(Lists.newArrayList(LOGIN, ORDER_ITEM)),
+    ADMIN(Lists.newArrayList(LOGIN, ADD_ITEM, ORDER_ITEM));
 
     private final List<Feature> features;
 
