@@ -10,7 +10,6 @@ import com.switchfully.service.order.dtos.OrderDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -29,7 +28,7 @@ public class OrderService {
         this.itemGroupMapper = new ItemGroupMapper();
     }
 
-    public OrderDTO orderItems(CreateOrderDTO createOrderDTO) {
+    public OrderDTO orderItems(CreateOrderDTO createOrderDTO, String userId) {
 
         checkOnDuplicateItemGroupIds(createOrderDTO);
 
@@ -37,19 +36,25 @@ public class OrderService {
 
         List<Item> itemList = getItemList(createOrderDTO);
 
-        Order newOrder = new Order(itemGroupMapper.DTOtoItemGroup(createOrderDTO.getCreateItemGroupDTOList(), itemList));
+        Order newOrder = new Order(itemGroupMapper.DTOtoItemGroup(createOrderDTO.getCreateItemGroupDTOList(), itemList), userId);
 
         orderRepository.addOrder(newOrder);
 
-        //TODO decrease item amount of each ordered item
+        decreaseAmountInItemRepository(createOrderDTO);
 
         return orderMapper.orderToDTO(newOrder);
 
     }
 
+    private void decreaseAmountInItemRepository(CreateOrderDTO createOrderDTO) {
+        for (CreateItemGroupDTO createItemGroupDTO: createOrderDTO.getCreateItemGroupDTOList()) {
+            itemRepository.getItemById(createItemGroupDTO.getSelectedItemId()).reduceAmount(createItemGroupDTO.getAmount());
+        }
+    }
+
     private void checkIfOrderExistAndItemIsInStock(CreateOrderDTO createOrderDTO) {
         for(CreateItemGroupDTO createItemGroupDTO : createOrderDTO.getCreateItemGroupDTOList()) {
-            itemRepository.isNumberOfItemsInStock(createItemGroupDTO.getSelectedItemId(), createItemGroupDTO.getAmount());
+            itemRepository.doesItemExist(createItemGroupDTO.getSelectedItemId());
         }
     }
 

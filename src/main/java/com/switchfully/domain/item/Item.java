@@ -7,7 +7,7 @@ public class Item {
     private final String name;
     private final String description;
     private final double price;
-    private final int amount;
+    private int amount;
 
     public Item(String name, String description, double price, int amount) {
         this.id = UUID.randomUUID().toString();
@@ -15,6 +15,10 @@ public class Item {
         this.description = description;
         this.price = price;
         this.amount = amount;
+    }
+
+    public void reduceAmount(int amountToDecrease) {
+        this.amount -= amountToDecrease;
     }
 
     public String getId() {

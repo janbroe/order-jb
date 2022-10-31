@@ -7,11 +7,14 @@ import java.time.LocalDate;
 public class ItemGroup {
     private final String selectedItemId;
     private final int amount;
+
+    private final double itemPrice;
     private final LocalDate shippingDate;
 
     public ItemGroup(int amount, Item item) {
         this.selectedItemId = item.getId();
         this.amount = amount;
+        this.itemPrice = item.getPrice();
         if(item.getAmount() > amount) {
             this.shippingDate = LocalDate.now().plusDays(1);
         } else {
@@ -29,5 +32,9 @@ public class ItemGroup {
 
     public LocalDate getShippingDate() {
         return shippingDate;
+    }
+
+    public double getItemPrice() {
+        return itemPrice;
     }
 }

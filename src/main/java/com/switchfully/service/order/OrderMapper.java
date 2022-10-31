@@ -12,6 +12,10 @@ public class OrderMapper {
     }
 
     public OrderDTO orderToDTO(Order order) {
-        return new OrderDTO().setOrderId(order.getId()).setItemGroupDTOList(itemGroupMapper.itemGroupToDTO(order.getItemGroupList()));
+        return new OrderDTO()
+                .setOrderId(order.getId())
+                .setItemGroupDTOList(itemGroupMapper.itemGroupToDTO(order.getItemGroupList()))
+                .setOrderPrice(order.getOrderPrice())
+                .setUserId(order.getUserId());
     }
 }

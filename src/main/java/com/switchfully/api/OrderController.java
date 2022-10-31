@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "/orders")
 public class OrderController {
@@ -33,6 +31,6 @@ public class OrderController {
     public OrderDTO orderItems(@RequestHeader String authorization, @RequestBody CreateOrderDTO createOrderDTO) {
         securityService.validateAuthorization(authorization, Feature.ORDER_ITEM);
         log.info("POST -> order item(s)" + createOrderDTO.toString());
-        return orderService.orderItems(createOrderDTO);
+        return orderService.orderItems(createOrderDTO, securityService.getUsername(authorization));
     }
 }
