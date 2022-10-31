@@ -1,6 +1,7 @@
 package com.switchfully.domain.item;
 
 import com.switchfully.api.OrderController;
+import com.switchfully.service.order.dtos.CreateOrderDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -31,17 +32,19 @@ public class ItemRepository {
         doesItemExist(itemId);
         return itemRepository.get(itemId);
     }
+
     public String doesItemExist(String itemId) {
-        if(!itemRepository.containsKey(itemId)) {
-            throw new NoSuchElementException("The item with id " + itemId + "does not exist");
+        if (!itemRepository.containsKey(itemId)) {
+            throw new NoSuchElementException("The item with id " + itemId + " does not exist");
         }
         return itemId;
     }
 
     public boolean isNumberOfItemsInStock(String itemId, int amount) {
         doesItemExist(itemId);
-        return getItemById(itemId).getAmount() > amount;
+        if (getItemById(itemId).getAmount() < amount) {
+            throw new NoSuchElementException("The item with id " + itemId + " has insufficient stock");
+        }
+        return true;
     }
-
-
 }

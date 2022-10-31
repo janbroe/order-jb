@@ -1,15 +1,13 @@
 package com.switchfully.domain.order;
 
 import com.switchfully.domain.item.Item;
-import com.switchfully.domain.item.ItemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
 public class ItemGroup {
-    private String selectedItemId;
-    private int amount;
-    private LocalDate shippingDate;
+    private final String selectedItemId;
+    private final int amount;
+    private final LocalDate shippingDate;
 
     public ItemGroup(int amount, Item item) {
         this.selectedItemId = item.getId();

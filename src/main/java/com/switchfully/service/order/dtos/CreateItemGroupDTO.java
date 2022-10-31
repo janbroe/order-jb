@@ -1,5 +1,7 @@
 package com.switchfully.service.order.dtos;
 
+import java.util.Objects;
+
 public class CreateItemGroupDTO {
     private String selectedItemId;
     private int amount;
@@ -20,5 +22,17 @@ public class CreateItemGroupDTO {
 
     public int getAmount() {
         return amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CreateItemGroupDTO that)) return false;
+        return Objects.equals(getSelectedItemId(), that.getSelectedItemId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSelectedItemId());
     }
 }
