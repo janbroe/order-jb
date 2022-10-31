@@ -24,7 +24,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     protected void unauthorizedException(UnauthorizedException exception, HttpServletResponse response) throws IOException {
         log.info("UnauthorizedException -> " + exception.getMessage());
-        response.sendError(HttpStatus.FORBIDDEN.value(), exception.getMessage());
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), exception.getMessage());
     }
 
     @ExceptionHandler(NoSuchElementException.class)
