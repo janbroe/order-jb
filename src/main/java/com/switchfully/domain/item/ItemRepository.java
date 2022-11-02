@@ -1,12 +1,11 @@
 package com.switchfully.domain.item;
 
+import com.switchfully.service.item.dtos.ItemDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 
 @Repository
@@ -41,11 +40,15 @@ public class ItemRepository {
         }
     }
 
-//    public boolean isNumberOfItemsInStock(String itemId, int amount) {
-//        doesItemExist(itemId);
-//        if (getItemById(itemId).getAmount() < amount) {
-//            throw new NoSuchElementException("The item with id " + itemId + " has insufficient stock");
-//        }
-//        return true;
-//    }
+    public void updateItem(String itemId, String name, String description, double price, int amount) {
+        doesItemExist(itemId);
+        itemRepository.get(itemId).setName(name);
+        itemRepository.get(itemId).setDescription(description);
+        itemRepository.get(itemId).setPrice(price);
+        itemRepository.get(itemId).setAmount(amount);
+    }
+
+    public Collection<Item> getAllItems() {
+        return itemRepository.values();
+    }
 }

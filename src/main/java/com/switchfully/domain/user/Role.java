@@ -7,7 +7,7 @@ import static com.switchfully.domain.user.Feature.*;
 
 public enum Role {
     CUSTOMER(Lists.newArrayList(LOGIN, ORDER_ITEM)),
-    ADMIN(Lists.newArrayList(LOGIN, ADD_ITEM, ORDER_ITEM));
+    ADMIN(Lists.newArrayList(LOGIN, ADD_ITEM, ORDER_ITEM, UPDATE_ITEM, GET_ALL_ITEMS));
 
     private final List<Feature> features;
 
