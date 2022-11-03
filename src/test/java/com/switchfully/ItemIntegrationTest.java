@@ -101,7 +101,7 @@ public class ItemIntegrationTest {
                 .headers("Authorization", "Basic " + authorization)
                 .port(port)
                 .when()
-                .put("items?itemId=" + initialItem.getId())
+                .put("items/" + initialItem.getId())
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
@@ -142,7 +142,7 @@ public class ItemIntegrationTest {
                 .headers("Authorization", "Basic " + authorization)
                 .port(port)
                 .when()
-                .put("items?itemId=" + initialItem.getId())
+                .put("items/" + initialItem.getId())
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.UNAUTHORIZED.value());
@@ -170,7 +170,7 @@ public class ItemIntegrationTest {
                 .headers("Authorization", "Basic " + authorization)
                 .port(port)
                 .when()
-                .put("items?itemId=" + "wrongItemId")
+                .put("items/" + "wrongItemId")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());

@@ -42,22 +42,11 @@ public class ItemController {
         return itemService.addItem(createItemDTO);
     }
 
-    //uses http://localhost:8080/items?itemId={itemID}
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, params = "itemId")
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void updateItem(@RequestHeader String authorization, @RequestParam String itemId, @RequestBody CreateItemDTO createItemDTO) {
+    public void updateItem(@RequestHeader String authorization, @PathVariable("id") String itemId, @RequestBody CreateItemDTO createItemDTO) {
         securityService.validateAuthorization(authorization, Feature.UPDATE_ITEM);
         log.info("PUT -> update item " + createItemDTO.toString());
         itemService.updateItem(itemId, createItemDTO);
     }
-
-//TODO ASK! what is best practice?
-    //uses http://localhost:8080/{itemID}
-//    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{id}")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public void updateItem(@RequestHeader String authorization, @PathVariable("id") String itemId, @RequestBody CreateItemDTO createItemDTO) {
-//        securityService.validateAuthorization(authorization, Feature.UPDATE_ITEM);
-//        log.info("PUT -> update item " + createItemDTO.toString());
-//        itemService.updateItem(itemId, createItemDTO);
-//    }
 }
