@@ -11,8 +11,7 @@ create table users
     role         integer
 );
 
-create sequence users_seq start with 1 increment by 1 cycle;
-
+create sequence user_seq start with 1 increment by 1 cycle;
 
 create table orders
 (

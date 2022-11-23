@@ -1,10 +1,7 @@
 package com.switchfully;
 
-import com.switchfully.domain.user.Role;
-import com.switchfully.domain.user.User;
 import com.switchfully.domain.user.UserRepository;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -23,16 +20,10 @@ public class SecurityControllerIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
-    private final User user = new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN);
-
-    @BeforeEach
-    void clearRepositoryAndAddMember() {
-        userRepository.save(user);
-    }
 
     @Test
     void login_givenValidEmailAndPassword() {
-        String authorization = Base64.getEncoder().encodeToString("jth@hotmail.com:pwd".getBytes());
+        String authorization = Base64.getEncoder().encodeToString("admin@order.com:pwd".getBytes());
 
         RestAssured
                 .given()
@@ -48,7 +39,7 @@ public class SecurityControllerIntegrationTest {
 
     @Test
     void login_givenInValidEmail() {
-        String authorization = Base64.getEncoder().encodeToString("invalid@hotmail.com:pwd".getBytes());
+        String authorization = Base64.getEncoder().encodeToString("invalid@order.com:pwd".getBytes());
 
         RestAssured
                 .given()
@@ -64,7 +55,7 @@ public class SecurityControllerIntegrationTest {
 
     @Test
     void login_givenInValidPassword() {
-        String authorization = Base64.getEncoder().encodeToString("jth@hotmail.com:invalidpwd".getBytes());
+        String authorization = Base64.getEncoder().encodeToString("admin@order.com:invalidpwd".getBytes());
 
         RestAssured
                 .given()

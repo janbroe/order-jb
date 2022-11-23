@@ -29,7 +29,7 @@ public class OrderService {
         this.itemGroupMapper = new ItemGroupMapper();
     }
 
-    public OrderDTO orderItems(CreateOrderDTO createOrderDTO, String userId) {
+    public OrderDTO orderItems(CreateOrderDTO createOrderDTO) {
 
         checkOnDuplicateItemGroupIds(createOrderDTO);
 

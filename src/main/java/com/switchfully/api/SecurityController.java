@@ -1,6 +1,5 @@
 package com.switchfully.api;
 
-import com.switchfully.domain.user.Feature;
 import com.switchfully.service.security.SecurityService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -19,6 +18,6 @@ public class SecurityController {
 
     @GetMapping
     public void login(@RequestHeader String authorization) {
-        securityService.validateAuthorization(authorization, Feature.LOGIN);
+       //Feature.LOGIN
     }
 }

@@ -45,8 +45,7 @@ public class ItemIntegrationTest {
     @Test
     void addItemHappyPath() {
 
-        String authorization = Base64.getEncoder().encodeToString("jth@hotmail.com:pwd".getBytes());
-        userRepository.save(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
+        String authorization = Base64.getEncoder().encodeToString("admin@order.com:pwd".getBytes());
 
         CreateItemDTO given = new CreateItemDTO()
                 .setName("Big firework")
