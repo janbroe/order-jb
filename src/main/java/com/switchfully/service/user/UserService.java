@@ -19,6 +19,7 @@ public class UserService {
     }
 
     public UserDTO createUser(CreateUserDTO createUserDTO) {
+        //todo can be done in mapper
         User newCustomer = new User()
                 .setFirstname(createUserDTO.getFirstname())
                 .setLastname(createUserDTO.getLastname())
@@ -28,7 +29,7 @@ public class UserService {
                 .setRole(Role.CUSTOMER)
                 .setPassword("pwd");
 
-        userRepository.createUser(newCustomer);
+        userRepository.save(newCustomer);
         return userMapper.userToDTO(newCustomer);
     }
 }

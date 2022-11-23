@@ -2,13 +2,13 @@ package com.switchfully.service.item.dtos;
 
 public class ItemDTO {
 
-    private String id;
+    private Long id;
     private String name;
     private String description;
     private double price;
     private int amount;
 
-    public ItemDTO setId(String id) {
+    public ItemDTO setId(Long id) {
         this.id = id;
         return this;
     }
@@ -33,7 +33,7 @@ public class ItemDTO {
         return this;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

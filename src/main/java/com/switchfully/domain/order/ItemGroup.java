@@ -2,14 +2,32 @@ package com.switchfully.domain.order;
 
 import com.switchfully.domain.item.Item;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "item_group")
 public class ItemGroup {
-    private final String selectedItemId;
-    private final int amount;
 
-    private final double itemPrice;
-    private final LocalDate shippingDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemgroup_seq")
+    @SequenceGenerator(name = "itemgroup_seq", sequenceName = "itemgroup_seq", allocationSize = 1)
+    private long id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="item_id")
+    private Item item;
+    private Long selectedItemId;
+    private int amount;
+    private double itemPrice;
+    private LocalDate shippingDate;
+
+    @ManyToOne
+    @JoinColumn(name="order_id")
+    private Order order;
+
+    public ItemGroup() {
+    }
 
     public ItemGroup(int amount, Item item) {
         this.selectedItemId = item.getId();
@@ -22,7 +40,7 @@ public class ItemGroup {
         }
     }
 
-    public String getSelectedItemId() {
+    public Long getSelectedItemId() {
         return selectedItemId;
     }
 

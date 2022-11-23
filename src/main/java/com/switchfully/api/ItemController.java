@@ -44,7 +44,7 @@ public class ItemController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void updateItem(@RequestHeader String authorization, @PathVariable("id") String itemId, @RequestBody CreateItemDTO createItemDTO) {
+    public void updateItem(@RequestHeader String authorization, @PathVariable("id") Long itemId, @RequestBody CreateItemDTO createItemDTO) {
         securityService.validateAuthorization(authorization, Feature.UPDATE_ITEM);
         log.info("PUT -> update item " + createItemDTO.toString());
         itemService.updateItem(itemId, createItemDTO);

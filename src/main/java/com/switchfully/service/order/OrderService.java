@@ -10,6 +10,7 @@ import com.switchfully.service.order.dtos.OrderDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class OrderService {
@@ -36,9 +37,9 @@ public class OrderService {
 
         List<Item> itemList = getItemList(createOrderDTO);
 
-        Order newOrder = new Order(itemGroupMapper.DTOtoItemGroup(createOrderDTO.getCreateItemGroupDTOList(), itemList), userId);
+        Order newOrder = new Order(itemGroupMapper.DTOtoItemGroup(createOrderDTO.getCreateItemGroupDTOList(), itemList));
 
-        orderRepository.addOrder(newOrder);
+        orderRepository.save(newOrder);
 
         decreaseAmountInItemRepository(createOrderDTO);
 
@@ -47,14 +48,16 @@ public class OrderService {
     }
 
     private void decreaseAmountInItemRepository(CreateOrderDTO createOrderDTO) {
-        for (CreateItemGroupDTO createItemGroupDTO: createOrderDTO.getCreateItemGroupDTOList()) {
-            itemRepository.getItemById(createItemGroupDTO.getSelectedItemId()).reduceAmount(createItemGroupDTO.getAmount());
+        for (CreateItemGroupDTO createItemGroupDTO : createOrderDTO.getCreateItemGroupDTOList()) {
+            itemRepository.findById(createItemGroupDTO.getSelectedItemId())
+                    .orElseThrow(() -> new NoSuchElementException("The item with id " + createItemGroupDTO.getSelectedItemId() + "does not exist"))
+                    .reduceAmount(createItemGroupDTO.getAmount());
         }
     }
 
     private void checkIfOrderExistAndItemIsInStock(CreateOrderDTO createOrderDTO) {
-        for(CreateItemGroupDTO createItemGroupDTO : createOrderDTO.getCreateItemGroupDTOList()) {
-            itemRepository.doesItemExist(createItemGroupDTO.getSelectedItemId());
+        for (CreateItemGroupDTO createItemGroupDTO : createOrderDTO.getCreateItemGroupDTOList()) {
+            itemRepository.findById(createItemGroupDTO.getSelectedItemId()).orElseThrow(() -> new NoSuchElementException("The item with id " + createItemGroupDTO.getSelectedItemId() + "does not exist"));
         }
     }
 
@@ -65,14 +68,14 @@ public class OrderService {
                 .toList()
                 .size();
 
-        if(createOrderDTO.getCreateItemGroupDTOList().size() > distinctListSize) {
+        if (createOrderDTO.getCreateItemGroupDTOList().size() > distinctListSize) {
             throw new MultipleItemGroupsWithSameIdInOrderException();
         }
     }
 
     private List<Item> getItemList(CreateOrderDTO createOrderDTO) {
         return createOrderDTO.getCreateItemGroupDTOList().stream()
-                .map(createItemGroupDTO -> itemRepository.getItemById(createItemGroupDTO.getSelectedItemId()))
+                .map(createItemGroupDTO -> itemRepository.findById(createItemGroupDTO.getSelectedItemId()).orElseThrow(() -> new NoSuchElementException("The item with id does not exist")))
                 .toList();
     }
 }

@@ -2,23 +2,25 @@ package com.switchfully.domain.user;
 
 import com.switchfully.domain.PasswordHasher;
 
-import java.util.UUID;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "USERS")
 public class User {
 
-    private final String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
+    private long userId;
     private String firstname;
     private String lastname;
     private String email;
     private String address;
     private String phoneNumber;
-
     private String password;
-
     private Role role;
 
     public User() {
-        this.id = UUID.randomUUID().toString();
     }
 
     public User setFirstname(String firstname) {
@@ -56,8 +58,8 @@ public class User {
         return this;
     }
 
-    public String getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
     public String getFirstname() {

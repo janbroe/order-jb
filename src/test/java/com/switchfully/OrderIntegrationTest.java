@@ -1,12 +1,10 @@
 package com.switchfully;
 
-import com.switchfully.domain.exceptions.MultipleItemGroupsWithSameIdInOrderException;
 import com.switchfully.domain.item.Item;
 import com.switchfully.domain.item.ItemRepository;
 import com.switchfully.domain.user.Role;
 import com.switchfully.domain.user.User;
 import com.switchfully.domain.user.UserRepository;
-import com.switchfully.service.item.dtos.ItemDTO;
 import com.switchfully.service.order.dtos.CreateItemGroupDTO;
 import com.switchfully.service.order.dtos.CreateOrderDTO;
 import com.switchfully.service.order.dtos.OrderDTO;
@@ -14,6 +12,7 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -23,6 +22,7 @@ import java.util.Base64;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase
 public class OrderIntegrationTest {
 
     @LocalServerPort
@@ -41,10 +41,10 @@ public class OrderIntegrationTest {
 
     @BeforeEach
     public void addUsersToUserRepo() {
-        userRepository.createUser(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
+        userRepository.save(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
 
-        itemRepository.addItem(newBalloonItem);
-        itemRepository.addItem(newConfettiItem);
+        itemRepository.save(newBalloonItem);
+        itemRepository.save(newConfettiItem);
 
     }
     @Test

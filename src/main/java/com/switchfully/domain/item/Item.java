@@ -1,16 +1,24 @@
 package com.switchfully.domain.item;
 
-import java.util.UUID;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "item")
 public class Item {
-    private final String id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_seq")
+    @SequenceGenerator(name = "item_seq", sequenceName = "item_seq", allocationSize = 1)
+    public Long id;
     private String name;
     private String description;
     private double price;
     private int amount;
 
+    public Item() {
+    }
+
     public Item(String name, String description, double price, int amount) {
-        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
         this.price = price;
@@ -21,7 +29,7 @@ public class Item {
         this.amount -= amountToDecrease;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

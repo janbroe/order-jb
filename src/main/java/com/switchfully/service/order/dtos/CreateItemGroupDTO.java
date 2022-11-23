@@ -3,10 +3,10 @@ package com.switchfully.service.order.dtos;
 import java.util.Objects;
 
 public class CreateItemGroupDTO {
-    private String selectedItemId;
+    private Long selectedItemId;
     private int amount;
 
-    public CreateItemGroupDTO setSelectedItemId(String selectedItemId) {
+    public CreateItemGroupDTO setSelectedItemId(Long selectedItemId) {
         this.selectedItemId = selectedItemId;
         return this;
     }
@@ -16,7 +16,7 @@ public class CreateItemGroupDTO {
         return this;
     }
 
-    public String getSelectedItemId() {
+    public Long getSelectedItemId() {
         return selectedItemId;
     }
 

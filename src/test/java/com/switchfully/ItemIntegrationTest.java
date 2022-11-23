@@ -11,6 +11,7 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase
 public class ItemIntegrationTest {
 
     @LocalServerPort
@@ -36,14 +38,15 @@ public class ItemIntegrationTest {
 
     @BeforeEach
     void addItemRepository() {
-        itemRepository.addItem(new Item("firework", "nice exploding stuff", 34.95, 5));
+        Item newItem = new Item("firework", "nice exploding stuff", 34.95, 5);
+        itemRepository.save(newItem);
     }
 
     @Test
     void addItemHappyPath() {
 
         String authorization = Base64.getEncoder().encodeToString("jth@hotmail.com:pwd".getBytes());
-        userRepository.createUser(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
+        userRepository.save(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
 
         CreateItemDTO given = new CreateItemDTO()
                 .setName("Big firework")
@@ -79,9 +82,9 @@ public class ItemIntegrationTest {
     void updateItemHappyPath() {
 
         String authorization = Base64.getEncoder().encodeToString("jth@hotmail.com:pwd".getBytes());
-        userRepository.createUser(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
+        userRepository.save(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
 
-        Item initialItem = itemRepository.getAllItems().stream()
+        Item initialItem = itemRepository.findAll().stream()
                 .filter(items -> items.getName().equals("firework"))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("firework item not found in item repo"));
@@ -106,7 +109,7 @@ public class ItemIntegrationTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
 
-        Item result = itemRepository.getItemById(initialItem.getId());
+        Item result = itemRepository.findById(initialItem.getId()).orElse(null);
 
         assertThat(result).isNotNull();
         assertThat(result.getName()).isEqualTo(given.getName());
@@ -120,9 +123,9 @@ public class ItemIntegrationTest {
     void whenUpdateItemWithWrongCredentials_thenExpectAuthorizationException() {
 
         String authorization = Base64.getEncoder().encodeToString("notAdmin@hotmail.com:pwd".getBytes());
-        userRepository.createUser(new User().setFirstname("Jos").setLastname("Vos").setEmail("notAdmin@hotmail.com").setAddress("vosbaan 3").setPhoneNumber("04999334455").setPassword("pwd").setRole(Role.CUSTOMER));
+        userRepository.save(new User().setFirstname("Jos").setLastname("Vos").setEmail("notAdmin@hotmail.com").setAddress("vosbaan 3").setPhoneNumber("04999334455").setPassword("pwd").setRole(Role.CUSTOMER));
 
-        Item initialItem = itemRepository.getAllItems().stream()
+        Item initialItem = itemRepository.findAll().stream()
                 .filter(items -> items.getName().equals("firework"))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("firework item not found in item repo"));
@@ -153,7 +156,7 @@ public class ItemIntegrationTest {
     void whenUpdateItemWithWrongItemId_thenExpectNoSushElementException() {
 
         String authorization = Base64.getEncoder().encodeToString("jth@hotmail.com:pwd".getBytes());
-        userRepository.createUser(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
+        userRepository.save(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
 
         CreateItemDTO given = new CreateItemDTO()
                 .setName("Big firework")

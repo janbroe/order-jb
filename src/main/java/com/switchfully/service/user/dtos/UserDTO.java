@@ -2,14 +2,14 @@ package com.switchfully.service.user.dtos;
 
 public class UserDTO {
 
-    private String id;
+    private Long id;
     private String firstname;
     private String lastname;
     private String email;
     private String address;
     private String phoneNumber;
 
-    public UserDTO setId(String id) {
+    public UserDTO setId(Long id) {
         this.id = id;
         return this;
     }
@@ -39,7 +39,7 @@ public class UserDTO {
         return this;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

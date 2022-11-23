@@ -4,11 +4,11 @@ import java.time.LocalDate;
 
 public class ItemGroupDTO {
 
-    private String selectedItemId;
+    private Long selectedItemId;
     private int amount;
     private LocalDate shippingDate;
 
-    public ItemGroupDTO setSelectedItemId(String selectedItemId) {
+    public ItemGroupDTO setSelectedItemId(Long selectedItemId) {
         this.selectedItemId = selectedItemId;
         return this;
     }
@@ -23,7 +23,7 @@ public class ItemGroupDTO {
         return this;
     }
 
-    public String getSelectedItemId() {
+    public Long getSelectedItemId() {
         return selectedItemId;
     }
 

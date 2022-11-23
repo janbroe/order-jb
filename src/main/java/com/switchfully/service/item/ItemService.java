@@ -6,9 +6,12 @@ import com.switchfully.service.item.dtos.CreateItemDTO;
 import com.switchfully.service.item.dtos.ItemDTO;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
+@Transactional
 public class ItemService {
 
     private final ItemRepository itemRepository;
@@ -21,15 +24,20 @@ public class ItemService {
 
     public ItemDTO addItem(CreateItemDTO createItemDTO) {
         Item newItem = new Item(createItemDTO.getName(), createItemDTO.getDescription(), createItemDTO.getPrice(), createItemDTO.getAmount());
-        itemRepository.addItem(newItem);
+        itemRepository.save(newItem);
         return itemMapper.itemToDTO(newItem);
     }
 
-    public void updateItem(String itemId, CreateItemDTO createItemDTO) {
-        itemRepository.updateItem(itemId, createItemDTO.getName(), createItemDTO.getDescription(), createItemDTO.getPrice(),  createItemDTO.getAmount());
+    public void updateItem(Long itemId, CreateItemDTO createItemDTO) {
+        Item foundItem = itemRepository.findById(itemId).orElseThrow(() -> new NoSuchElementException("The item with id " + itemId + " does not exist"));
+        foundItem.setName(createItemDTO.getName());
+        foundItem.setDescription(createItemDTO.getDescription());
+        foundItem.setPrice(createItemDTO.getPrice());
+        foundItem.setAmount(createItemDTO.getAmount());
+        itemRepository.save(foundItem);
     }
 
     public List<ItemDTO> getAllItems() {
-        return itemMapper.itemToDTO(itemRepository.getAllItems());
+        return itemMapper.itemToDTO(itemRepository.findAll());
     }
 }

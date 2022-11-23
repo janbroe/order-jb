@@ -9,6 +9,7 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.http.MediaType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase
 public class CustomerIntegrationTest {
 
     @LocalServerPort
@@ -27,7 +29,7 @@ public class CustomerIntegrationTest {
 
     @BeforeEach
     void createCustomerRepository() {
-        customerRepository.createUser(new User().setFirstname("Frank").setLastname("Verstraeten").setEmail("frankiexxx@gmail.com").setAddress("Beeldekensstraat 5").setPhoneNumber("0455667788").setPassword("pwd").setRole(Role.CUSTOMER));
+        customerRepository.save(new User().setFirstname("Frank").setLastname("Verstraeten").setEmail("frankiexxx@gmail.com").setAddress("Beeldekensstraat 5").setPhoneNumber("0455667788").setPassword("pwd").setRole(Role.CUSTOMER));
     }
 
     @Test

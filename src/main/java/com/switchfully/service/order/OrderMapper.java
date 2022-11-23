@@ -16,6 +16,6 @@ public class OrderMapper {
                 .setOrderId(order.getId())
                 .setItemGroupDTOList(itemGroupMapper.itemGroupToDTO(order.getItemGroupList()))
                 .setOrderPrice(order.getOrderPrice())
-                .setUserId(order.getUserId());
+                .setUser(order.getUser());
     }
 }

@@ -7,6 +7,7 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import java.util.Base64;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase
 public class SecurityControllerIntegrationTest {
 
     @LocalServerPort
@@ -25,7 +27,7 @@ public class SecurityControllerIntegrationTest {
 
     @BeforeEach
     void clearRepositoryAndAddMember() {
-        userRepository.createUser(user);
+        userRepository.save(user);
     }
 
     @Test

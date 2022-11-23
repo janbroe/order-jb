@@ -7,15 +7,15 @@ import java.util.List;
 public class OrderDTO {
 
 
-    private String orderId;
+    private Long orderId;
 
     private List<ItemGroupDTO> itemGroupDTOList;
 
     private double orderPrice;
 
-    private String userId;
+    private User user;
 
-    public OrderDTO setOrderId(String orderId) {
+    public OrderDTO setOrderId(Long orderId) {
         this.orderId = orderId;
         return this;
     }
@@ -30,12 +30,12 @@ public class OrderDTO {
         return this;
     }
 
-    public  OrderDTO setUserId(String userId) {
-        this.userId = userId;
+    public  OrderDTO setUser(User user) {
+        this.user = user;
         return this;
     }
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
@@ -47,7 +47,7 @@ public class OrderDTO {
         return orderPrice;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 }
