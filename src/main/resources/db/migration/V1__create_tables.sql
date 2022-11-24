@@ -8,7 +8,8 @@ create table users
     lastname     varchar(255),
     password     varchar(255),
     phone_number varchar(255),
-    role         integer
+    role         integer,
+    user_name varchar(255)
 );
 
 create sequence user_seq start with 1 increment by 1 cycle;

@@ -24,7 +24,7 @@ public class CustomerController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO createCustomer(@RequestBody CreateUserDTO createUserDTO) {
-        log.info("POST -> create User" + createUserDTO.toString());
+        log.info("POST -> create user" + createUserDTO.toString());
         return userService.createUser(createUserDTO);
     }
 }

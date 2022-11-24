@@ -1,6 +1,7 @@
 package com.switchfully.service.user;
 
-import com.switchfully.domain.user.Role;
+import com.switchfully.service.security.KeycloakService;
+import com.switchfully.service.security.KeycloakUserDTO;
 import com.switchfully.domain.user.User;
 import com.switchfully.domain.user.UserRepository;
 import com.switchfully.service.user.dtos.CreateUserDTO;
@@ -13,23 +14,21 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userMapper = new UserMapper();
+    private final KeycloakService keycloakService;
+
+    public UserService(UserMapper userMapper, UserRepository userRepository, KeycloakService keycloakService) {
+        this.userMapper = userMapper;
         this.userRepository = userRepository;
+        this.keycloakService = keycloakService;
     }
 
     public UserDTO createUser(CreateUserDTO createUserDTO) {
-        //todo can be done in mapper
-        User newCustomer = new User()
-                .setFirstname(createUserDTO.getFirstname())
-                .setLastname(createUserDTO.getLastname())
-                .setEmail(createUserDTO.getEmail())
-                .setAddress(createUserDTO.getAddress())
-                .setPhoneNumber(createUserDTO.getPhoneNumber())
-                .setRole(Role.CUSTOMER)
-                .setPassword("pwd");
-
-        userRepository.save(newCustomer);
+        User newCustomer = userMapper.createUserDTOtoUser(createUserDTO);
+        User user = userRepository.save(newCustomer);
+        if(!user.getFirstname().contains("test")) {
+            System.out.println("No test user -> writing to keycloak");
+            keycloakService.addUser(new KeycloakUserDTO(user.getUserName(), createUserDTO.getPassword(), user.getRole()));
+        }
         return userMapper.userToDTO(newCustomer);
     }
 }

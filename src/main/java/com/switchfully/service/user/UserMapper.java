@@ -1,11 +1,12 @@
 package com.switchfully.service.user;
 
 import com.switchfully.domain.user.User;
+import com.switchfully.service.security.Role;
+import com.switchfully.service.user.dtos.CreateUserDTO;
 import com.switchfully.service.user.dtos.UserDTO;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+@Component
 public class UserMapper {
 
     public UserDTO userToDTO(User user) {
@@ -15,12 +16,18 @@ public class UserMapper {
                 .setLastname(user.getLastname())
                 .setEmail(user.getEmail())
                 .setAddress(user.getAddress())
-                .setPhoneNumber(user.getPhoneNumber());
+                .setPhoneNumber(user.getPhoneNumber())
+                .setUserName(user.getUserName());
     }
 
-    public List<UserDTO> userToDTO(List<User> users) {
-        return users.stream()
-                .map(this::userToDTO)
-                .collect(Collectors.toList());
+    public User createUserDTOtoUser(CreateUserDTO createUserDTO) {
+        return new User()
+                .setFirstname(createUserDTO.getFirstname())
+                .setLastname(createUserDTO.getLastname())
+                .setEmail(createUserDTO.getEmail())
+                .setAddress(createUserDTO.getAddress())
+                .setPhoneNumber(createUserDTO.getPhoneNumber())
+                .setRole(Role.CUSTOMER)
+                .setUserName(createUserDTO.getUserName());
     }
 }

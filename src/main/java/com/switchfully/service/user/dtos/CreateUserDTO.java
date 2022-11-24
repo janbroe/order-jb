@@ -8,6 +8,10 @@ public class CreateUserDTO {
     private String address;
     private String phoneNumber;
 
+    private String userName;
+
+    private String password;
+
     public CreateUserDTO setFirstname(String firstname) {
         this.firstname = firstname;
         return this;
@@ -33,6 +37,16 @@ public class CreateUserDTO {
         return this;
     }
 
+    public CreateUserDTO setUserName(String userName) {
+        this.userName = userName;
+        return this;
+    }
+
+    public CreateUserDTO setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
     public String getFirstname() {
         return firstname;
     }
@@ -51,5 +65,13 @@ public class CreateUserDTO {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

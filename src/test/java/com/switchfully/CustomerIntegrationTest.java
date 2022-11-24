@@ -1,14 +1,9 @@
 package com.switchfully;
 
-import com.switchfully.domain.user.Role;
-import com.switchfully.domain.user.User;
-import com.switchfully.domain.user.UserRepository;
 import com.switchfully.service.user.dtos.CreateUserDTO;
 import com.switchfully.service.user.dtos.UserDTO;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -24,23 +19,17 @@ public class CustomerIntegrationTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private UserRepository customerRepository;
-
-    @BeforeEach
-    void createCustomerRepository() {
-        customerRepository.save(new User().setFirstname("Frank").setLastname("Verstraeten").setEmail("frankiexxx@gmail.com").setAddress("Beeldekensstraat 5").setPhoneNumber("0455667788").setPassword("pwd").setRole(Role.CUSTOMER));
-    }
-
     @Test
-    void addCustomer() {
+    void addCustomerHappyPath() {
 
         CreateUserDTO given = new CreateUserDTO()
-                .setFirstname("Brad")
+                .setFirstname("testBrad")
                 .setLastname("Pit")
                 .setEmail("bp@outlook.com")
                 .setAddress("hollywood")
-                .setPhoneNumber("6655112233");
+                .setPhoneNumber("6655112233")
+                .setUserName("bradPit")
+                .setPassword("pwd");
 
         UserDTO result = RestAssured
                 .given()
@@ -65,6 +54,4 @@ public class CustomerIntegrationTest {
         assertThat(result.getPhoneNumber()).isEqualTo(given.getPhoneNumber());
 
     }
-
-
 }

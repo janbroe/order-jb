@@ -2,13 +2,10 @@ package com.switchfully;
 
 import com.switchfully.domain.item.Item;
 import com.switchfully.domain.item.ItemRepository;
-import com.switchfully.domain.user.Role;
-import com.switchfully.domain.user.User;
-import com.switchfully.domain.user.UserRepository;
 import com.switchfully.service.item.dtos.CreateItemDTO;
 import com.switchfully.service.item.dtos.ItemDTO;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -17,7 +14,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.util.Base64;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,19 +29,47 @@ public class ItemIntegrationTest {
     @Autowired
     private ItemRepository itemRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private static String customerToken;
+    private static String adminToken;
 
-    @BeforeEach
-    void addItemRepository() {
-        Item newItem = new Item("firework", "nice exploding stuff", 34.95, 5);
-        itemRepository.save(newItem);
+    @BeforeAll
+    static void generateCustomerToken() {
+        customerToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "customer")
+                .formParam("password", "customer")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "order-jb")
+                .formParam("client_secret", "80798f7f-6ef2-4f2f-9d89-55f25738588a")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/java-sep-2022/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
+
+    @BeforeAll
+    static void generateAdminToken() {
+        adminToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "admin")
+                .formParam("password", "admin")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "order-jb")
+                .formParam("client_secret", "80798f7f-6ef2-4f2f-9d89-55f25738588a")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/java-sep-2022/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
     }
 
     @Test
     void addItemHappyPath() {
-
-        String authorization = Base64.getEncoder().encodeToString("admin@order.com:pwd".getBytes());
 
         CreateItemDTO given = new CreateItemDTO()
                 .setName("Big firework")
@@ -58,8 +82,8 @@ public class ItemIntegrationTest {
                 .body(given)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer " + adminToken)
                 .baseUri("http://localhost")
-                .headers("Authorization", "Basic " + authorization)
                 .port(port)
                 .when()
                 .post("/items")
@@ -80,9 +104,6 @@ public class ItemIntegrationTest {
     @Test
     void updateItemHappyPath() {
 
-        String authorization = Base64.getEncoder().encodeToString("jth@hotmail.com:pwd".getBytes());
-        userRepository.save(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
-
         Item initialItem = itemRepository.findAll().stream()
                 .filter(items -> items.getName().equals("firework"))
                 .findFirst()
@@ -99,8 +120,8 @@ public class ItemIntegrationTest {
                 .body(given)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer " + adminToken)
                 .baseUri("http://localhost")
-                .headers("Authorization", "Basic " + authorization)
                 .port(port)
                 .when()
                 .put("items/" + initialItem.getId())
@@ -119,10 +140,7 @@ public class ItemIntegrationTest {
     }
 
     @Test
-    void whenUpdateItemWithWrongCredentials_thenExpectAuthorizationException() {
-
-        String authorization = Base64.getEncoder().encodeToString("notAdmin@hotmail.com:pwd".getBytes());
-        userRepository.save(new User().setFirstname("Jos").setLastname("Vos").setEmail("notAdmin@hotmail.com").setAddress("vosbaan 3").setPhoneNumber("04999334455").setPassword("pwd").setRole(Role.CUSTOMER));
+    void whenUpdateItemWithCustomerCredentials_thenExpectAuthorizationException() {
 
         Item initialItem = itemRepository.findAll().stream()
                 .filter(items -> items.getName().equals("firework"))
@@ -140,22 +158,19 @@ public class ItemIntegrationTest {
                 .body(given)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer " + customerToken)
                 .baseUri("http://localhost")
-                .headers("Authorization", "Basic " + authorization)
                 .port(port)
                 .when()
                 .put("items/" + initialItem.getId())
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.UNAUTHORIZED.value());
+                .statusCode(HttpStatus.FORBIDDEN.value());
 
     }
 
     @Test
     void whenUpdateItemWithWrongItemId_thenExpectNoSushElementException() {
-
-        String authorization = Base64.getEncoder().encodeToString("jth@hotmail.com:pwd".getBytes());
-        userRepository.save(new User().setFirstname("Jaak").setLastname("Trekhaak").setEmail("jth@hotmail.com").setAddress("Remorkbaan 66").setPhoneNumber("04999001122").setPassword("pwd").setRole(Role.ADMIN));
 
         CreateItemDTO given = new CreateItemDTO()
                 .setName("Big firework")
@@ -168,8 +183,8 @@ public class ItemIntegrationTest {
                 .body(given)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer " + adminToken)
                 .baseUri("http://localhost")
-                .headers("Authorization", "Basic " + authorization)
                 .port(port)
                 .when()
                 .put("items/" + "wrongItemId")

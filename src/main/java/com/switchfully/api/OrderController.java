@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,8 +24,8 @@ public class OrderController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces  = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ORDER_ITEM')")
     public OrderDTO orderItems(@RequestBody CreateOrderDTO createOrderDTO) {
-        //Feature.ORDER_ITEM
         log.info("POST -> order item(s)" + createOrderDTO.toString());
         return orderService.orderItems(createOrderDTO);
     }

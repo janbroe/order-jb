@@ -1,6 +1,6 @@
 package com.switchfully.domain.user;
 
-import com.switchfully.domain.PasswordHasher;
+import com.switchfully.service.security.Role;
 
 import javax.persistence.*;
 
@@ -17,8 +17,9 @@ public class User {
     private String email;
     private String address;
     private String phoneNumber;
-    private String password;
     private Role role;
+
+    private String userName;
 
     public User() {
     }
@@ -48,13 +49,13 @@ public class User {
         return this;
     }
 
-    public User setPassword(String password) {
-        this.password = new PasswordHasher(password).getHashedPassword();
+    public User setRole(Role role) {
+        this.role = role;
         return this;
     }
 
-    public User setRole(Role role) {
-        this.role = role;
+    public User setUserName(String userName) {
+        this.userName = userName;
         return this;
     }
 
@@ -82,19 +83,11 @@ public class User {
         return phoneNumber;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public Role getRole() {
         return role;
     }
 
-    public boolean doesPasswordMatch(String passwordToMatch) {
-        return password.equals(new PasswordHasher(passwordToMatch).getHashedPassword());
-    }
-
-    public boolean canHaveAccessTo(Feature feature) {
-        return role.containsFeature(feature);
+    public String getUserName() {
+        return userName;
     }
 }

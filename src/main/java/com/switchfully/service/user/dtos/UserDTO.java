@@ -8,6 +8,7 @@ public class UserDTO {
     private String email;
     private String address;
     private String phoneNumber;
+    private String userName;
 
     public UserDTO setId(Long id) {
         this.id = id;
@@ -36,6 +37,11 @@ public class UserDTO {
 
     public UserDTO setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+        return this;
+    }
+
+    public UserDTO setUserName(String userName) {
+        this.userName = userName;
         return this;
     }
 

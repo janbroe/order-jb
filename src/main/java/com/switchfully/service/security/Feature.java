@@ -1,4 +1,4 @@
-package com.switchfully.domain.user;
+package com.switchfully.service.security;
 
 public enum Feature {
     LOGIN,
