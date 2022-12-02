@@ -23,6 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase
 public class ItemIntegrationTest {
 
+    public static final String keycloakSecretKey = "A62SnboFANzmoRE3v8ROz1M2bHdkY7rT";
+    public static final String keycloakTokenLink = "https://keycloak.switchfully.com/auth/realms/order-jb/protocol/openid-connect/token";
     @LocalServerPort
     private int port;
 
@@ -41,9 +43,9 @@ public class ItemIntegrationTest {
                 .formParam("password", "customer")
                 .formParam("grant_type", "password")
                 .formParam("client_id", "order-jb")
-                .formParam("client_secret", "80798f7f-6ef2-4f2f-9d89-55f25738588a")
+                .formParam("client_secret", keycloakSecretKey)
                 .when()
-                .post("https://keycloak.switchfully.com/auth/realms/java-sep-2022/protocol/openid-connect/token")
+                .post(keycloakTokenLink)
                 .then()
                 .extract()
                 .path("access_token")
@@ -59,9 +61,9 @@ public class ItemIntegrationTest {
                 .formParam("password", "admin")
                 .formParam("grant_type", "password")
                 .formParam("client_id", "order-jb")
-                .formParam("client_secret", "80798f7f-6ef2-4f2f-9d89-55f25738588a")
+                .formParam("client_secret", keycloakSecretKey)
                 .when()
-                .post("https://keycloak.switchfully.com/auth/realms/java-sep-2022/protocol/openid-connect/token")
+                .post(keycloakTokenLink)
                 .then()
                 .extract()
                 .path("access_token")
