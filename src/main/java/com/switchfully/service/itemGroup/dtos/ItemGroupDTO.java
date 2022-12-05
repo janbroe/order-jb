@@ -1,12 +1,18 @@
-package com.switchfully.service.order.dtos;
+package com.switchfully.service.itemGroup.dtos;
 
 import java.time.LocalDate;
 
 public class ItemGroupDTO {
 
+    private Long id;
     private Long selectedItemId;
     private int amount;
     private LocalDate shippingDate;
+
+    public ItemGroupDTO setItemGroupId(long id) {
+        this.id = id;
+        return this;
+    }
 
     public ItemGroupDTO setSelectedItemId(Long selectedItemId) {
         this.selectedItemId = selectedItemId;
@@ -34,4 +40,5 @@ public class ItemGroupDTO {
     public LocalDate getShippingDate() {
         return shippingDate;
     }
+
 }

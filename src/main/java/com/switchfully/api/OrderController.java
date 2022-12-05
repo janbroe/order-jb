@@ -10,6 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/orders")
 public class OrderController {
@@ -25,8 +28,15 @@ public class OrderController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces  = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ORDER_ITEM')")
-    public OrderDTO orderItems(@RequestBody CreateOrderDTO createOrderDTO) {
+    public OrderDTO orderItems(@RequestBody CreateOrderDTO createOrderDTO, Principal principal) {
         log.info("POST -> order item(s)" + createOrderDTO.toString());
-        return orderService.orderItems(createOrderDTO);
+        return orderService.orderItems(createOrderDTO, principal.getName());
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_ALL_ORDERS')")
+    public List<OrderDTO> getAllOrders() {
+        log.info("GET -> get all orders");
+        return orderService.getAllOrders();
     }
 }

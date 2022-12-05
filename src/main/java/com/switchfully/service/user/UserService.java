@@ -31,4 +31,13 @@ public class UserService {
         }
         return userMapper.userToDTO(newCustomer);
     }
+
+    public User findUserByUsername(String userName) {
+        User foundUser = userRepository.findUserByUserName(userName);
+        if(foundUser == null) {
+            throw new IllegalArgumentException("User " + userName + "not found");
+        }
+        return foundUser;
+    }
+
 }

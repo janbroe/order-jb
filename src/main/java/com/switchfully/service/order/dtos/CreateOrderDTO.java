@@ -1,5 +1,7 @@
 package com.switchfully.service.order.dtos;
 
+import com.switchfully.service.itemGroup.dtos.CreateItemGroupDTO;
+
 import java.util.List;
 
 public class CreateOrderDTO {

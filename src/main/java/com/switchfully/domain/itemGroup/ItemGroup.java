@@ -1,6 +1,8 @@
-package com.switchfully.domain.order;
+package com.switchfully.domain.itemGroup;
 
 import com.switchfully.domain.item.Item;
+import com.switchfully.domain.order.Order;
+import com.switchfully.service.itemGroup.dtos.CreateItemGroupDTO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,12 +19,11 @@ public class ItemGroup {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="item_id")
     private Item item;
-    private Long selectedItemId;
     private int amount;
     private double itemPrice;
     private LocalDate shippingDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="order_id")
     private Order order;
 
@@ -30,7 +31,6 @@ public class ItemGroup {
     }
 
     public ItemGroup(int amount, Item item) {
-        this.selectedItemId = item.getId();
         this.amount = amount;
         this.itemPrice = item.getPrice();
         if(item.getAmount() > amount) {
@@ -40,10 +40,21 @@ public class ItemGroup {
         }
     }
 
-    public Long getSelectedItemId() {
-        return selectedItemId;
+    public ItemGroup(CreateItemGroupDTO createItemGroupDTO, Order order) {
+        this.item = itemReposicreateItemGroupDTO.getSelectedItem();
+        this.amount = createItemGroupDTO.getAmount();
+        this.itemPrice = createItemGroupDTO.getSelectedItem().getPrice();
+        this.order = order;
+        if(item.getAmount() > amount) {
+            this.shippingDate = LocalDate.now().plusDays(1);
+        } else {
+            this.shippingDate = LocalDate.now().plusWeeks(1);
+        }
     }
 
+    public long getId() {
+        return id;
+    }
     public int getAmount() {
         return amount;
     }
@@ -54,5 +65,9 @@ public class ItemGroup {
 
     public double getItemPrice() {
         return itemPrice;
+    }
+
+    public Long getSelectedItemId() {
+        return this.item.getId();
     }
 }

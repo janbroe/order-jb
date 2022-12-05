@@ -1,6 +1,7 @@
 package com.switchfully.domain.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.switchfully.domain.itemGroup.ItemGroup;
 import com.switchfully.domain.user.User;
 
 import javax.persistence.*;
@@ -15,21 +16,20 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
     @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
     private Long orderId;
-    @OneToMany(mappedBy = "order")
-    private List<ItemGroup> itemGroupList;
     private double orderPrice;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     public Order() {
     }
 
-    public Order(List<ItemGroup> itemGroupList) {
-        this.itemGroupList = itemGroupList;
-        this.orderPrice = getSumOfGroupListsInOrder(itemGroupList);
+    public Order(double orderPrice, User user) {
+        this.orderPrice = orderPrice;
+        this.user = user;
     }
+
+
 
     private static double getSumOfGroupListsInOrder(List<ItemGroup> itemGroupList) {
         return itemGroupList.stream()
@@ -40,10 +40,6 @@ public class Order {
 
     public Long getId() {
         return orderId;
-    }
-
-    public List<ItemGroup> getItemGroupList() {
-        return itemGroupList;
     }
 
     public double getOrderPrice() {

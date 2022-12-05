@@ -1,9 +1,9 @@
-package com.switchfully.service.order;
+package com.switchfully.service.itemGroup;
 
 import com.switchfully.domain.item.Item;
-import com.switchfully.domain.order.ItemGroup;
-import com.switchfully.service.order.dtos.CreateItemGroupDTO;
-import com.switchfully.service.order.dtos.ItemGroupDTO;
+import com.switchfully.domain.itemGroup.ItemGroup;
+import com.switchfully.service.itemGroup.dtos.CreateItemGroupDTO;
+import com.switchfully.service.itemGroup.dtos.ItemGroupDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +17,7 @@ public class ItemGroupMapper {
 
     public ItemGroupDTO itemGroupToDTO(ItemGroup itemGroup) {
         return new ItemGroupDTO()
+                .setItemGroupId(itemGroup.getId())
                 .setSelectedItemId(itemGroup.getSelectedItemId())
                 .setAmount(itemGroup.getAmount())
                 .setShippingDate(itemGroup.getShippingDate());

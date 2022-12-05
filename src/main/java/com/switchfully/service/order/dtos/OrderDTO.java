@@ -1,11 +1,11 @@
 package com.switchfully.service.order.dtos;
 
 import com.switchfully.domain.user.User;
+import com.switchfully.service.itemGroup.dtos.ItemGroupDTO;
 
 import java.util.List;
 
 public class OrderDTO {
-
 
     private Long orderId;
 

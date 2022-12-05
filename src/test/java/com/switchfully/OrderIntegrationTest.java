@@ -2,7 +2,7 @@ package com.switchfully;
 
 import com.switchfully.domain.item.Item;
 import com.switchfully.domain.item.ItemRepository;
-import com.switchfully.service.order.dtos.CreateItemGroupDTO;
+import com.switchfully.service.itemGroup.dtos.CreateItemGroupDTO;
 import com.switchfully.service.order.dtos.CreateOrderDTO;
 import com.switchfully.service.order.dtos.OrderDTO;
 import io.restassured.RestAssured;

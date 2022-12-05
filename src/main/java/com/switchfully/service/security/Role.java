@@ -8,7 +8,7 @@ import static com.switchfully.service.security.Feature.*;
 
 public enum Role {
     CUSTOMER("customer", LOGIN, ORDER_ITEM),
-    ADMIN("admin", LOGIN, ADD_ITEM, ORDER_ITEM, UPDATE_ITEM, GET_ALL_ITEMS);
+    ADMIN("admin", LOGIN, ADD_ITEM, ORDER_ITEM, UPDATE_ITEM, GET_ALL_ITEMS, GET_ALL_ORDERS);
 
     private final String label;
     private final List<Feature> featureList;
